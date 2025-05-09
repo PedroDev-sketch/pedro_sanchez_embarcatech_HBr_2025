@@ -20,7 +20,7 @@
 #define HISTOGRAM_WIDTH 20
 
 const double PI = 3.1415926535;
-const double GRAVITY = 1.2;
+const double GRAVITY = 1.75;
 const int HORIZONTAL_SPACE = 20;
 const int VERTICAL_SPACE = 7;
 const int START_COLUMN=W/2 - 1;
@@ -120,7 +120,10 @@ void collision_handler() {
                 double dot = -2*((normal_x * ball->vx) + (normal_y * ball->vy));
                 if(dot > 0) 
                 {
-                    ball->vx = ball->vx + (normal_x * dot);
+                    ball->x = peg->x + (normal_x * (distance+1));
+                    ball->y = peg->y + (normal_y * (distance+1));
+
+                    ball->vx = ball->vx + (normal_x * dot) * 0.4;
                     ball->vy = ball->vy + (normal_y * dot) * 0.5;
                 }
             }
@@ -169,13 +172,10 @@ void update_balls()
         // Atualiza a posição da bola
         ball->y += ball->vy*DT;
 
-        double new_x = ceil(ball->vx*DT); 
-        if(new_x < 0)
-            new_x = floor(ball->vx*DT);
-        else if(new_x > 0)
-            new_x = ceil(ball->vx*DT);
-        else
-            new_x = rand_mod(2) ? 1 : -1;
+        double new_x = ball->vx*DT; 
+        if(abs(new_x)<1.0) {
+            new_x = rand_mod(2) ? 1: -1;
+        }
 
 
         ball->x += new_x;
@@ -262,7 +262,7 @@ void update_display(ssd1306_t *disp)
     {
         for(int j = 2+(21*i); j <= 21+(21*i); j++) //grossura dos elementos do histograma
         {
-            for(int k = 64; k > 64 - display_result[i]; k--) //altura dos elementos do histograma
+            for(int k = 64; k > 63 - display_result[i]; k--) //altura dos elementos do histograma
             {
                 ssd1306_draw_pixel(disp, j, k);
             }
