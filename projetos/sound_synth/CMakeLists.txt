@@ -35,7 +35,7 @@ pico_sdk_init()
 
 # Add executable. Default name is the project name, version 0.1
 
-add_executable(sound_synth app/main.c include/ssd1306.c drivers/display.c drivers/button.c drivers/microphone.c drivers/buzzer.c)
+add_executable(sound_synth app/main.c include/ssd1306.c )
 
 pico_set_program_name(sound_synth "sound_synth")
 pico_set_program_version(sound_synth "0.1")
